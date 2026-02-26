@@ -1,0 +1,20 @@
+type HighscoreEntry = 
+ record {
+   playerName: text;
+   time: nat;
+   timestamp: int;
+ };
+type FileReference = 
+ record {
+   hash: text;
+   path: text;
+ };
+service : {
+  addHighscore: (playerName: text, time: nat) -> ();
+  dropFileReference: (path: text) -> ();
+  getFileReference: (path: text) -> (FileReference) query;
+  getHighscores: () -> (vec HighscoreEntry) query;
+  getTopHighscores: () -> (vec HighscoreEntry) query;
+  listFileReferences: () -> (vec FileReference) query;
+  registerFileReference: (path: text, hash: text) -> ();
+}

@@ -1,0 +1,6 @@
+{
+  "frontend/src/lib/i18n.ts": "Internationalization system with German as default language, supporting English and German with localStorage persistence and automatic page reload on language change.",
+  "frontend/src/components/LanguageSelector.tsx": "Dropdown language selector component with globe icon that allows users to switch between English and German languages.",
+  "frontend/src/components/GameHeader.tsx": "Game header component with title, subtitle, and prominently positioned language selector in the top-right corner.",
+  "frontend/src/hooks/useTranslation.ts": "Translation hook that provides current translations and language change functionality with automatic page reload when switching languages."
+}

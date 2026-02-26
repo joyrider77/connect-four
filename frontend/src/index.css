@@ -1,0 +1,599 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.75rem;
+        --background: 1 0 0;
+        --foreground: 0.145 0 0;
+        --card: 1 0 0;
+        --card-foreground: 0.145 0 0;
+        --popover: 1 0 0;
+        --popover-foreground: 0.145 0 0;
+        --primary: 0.55 0.20 260;
+        --primary-foreground: 0.985 0 0;
+        --secondary: 0.65 0.18 320;
+        --secondary-foreground: 0.985 0 0;
+        --muted: 0.97 0 0;
+        --muted-foreground: 0.556 0 0;
+        --accent: 0.70 0.25 45;
+        --accent-foreground: 0.985 0 0;
+        --destructive: 0.577 0.245 27.325;
+        --destructive-foreground: 0.985 0 0;
+        --border: 0.922 0 0;
+        --input: 0.922 0 0;
+        --ring: 0.708 0 0;
+        --chart-1: 0.646 0.222 41.116;
+        --chart-2: 0.6 0.118 184.704;
+        --chart-3: 0.398 0.07 227.392;
+        --chart-4: 0.828 0.189 84.429;
+        --chart-5: 0.769 0.188 70.08;
+        --sidebar: 0.985 0 0;
+        --sidebar-foreground: 0.145 0 0;
+        --sidebar-primary: 0.205 0 0;
+        --sidebar-primary-foreground: 0.985 0 0;
+        --sidebar-accent: 0.97 0 0;
+        --sidebar-accent-foreground: 0.205 0 0;
+        --sidebar-border: 0.922 0 0;
+        --sidebar-ring: 0.708 0 0;
+        
+        /* Connect Four specific colors - Enhanced */
+        --player1: 0.70 0.30 15;
+        --player1-dark: 0.60 0.30 15;
+        --player2: 0.75 0.25 65;
+        --player2-dark: 0.65 0.25 65;
+        --board-bg: 0.40 0.20 240;
+        --board-shadow: 0.20 0.15 240;
+        
+        /* Game specific gradients */
+        --game-gradient-start: 0.95 0.05 260;
+        --game-gradient-end: 0.90 0.08 320;
+    }
+
+    .dark {
+        --background: 0.145 0 0;
+        --foreground: 0.985 0 0;
+        --card: 0.205 0 0;
+        --card-foreground: 0.985 0 0;
+        --popover: 0.269 0 0;
+        --popover-foreground: 0.985 0 0;
+        --primary: 0.65 0.20 260;
+        --primary-foreground: 0.205 0 0;
+        --secondary: 0.70 0.18 320;
+        --secondary-foreground: 0.205 0 0;
+        --muted: 0.269 0 0;
+        --muted-foreground: 0.708 0 0;
+        --accent: 0.75 0.25 45;
+        --accent-foreground: 0.205 0 0;
+        --destructive: 0.704 0.191 22.216;
+        --destructive-foreground: 0.205 0 0;
+        --border: 1 0 0 / 10%;
+        --input: 1 0 0 / 15%;
+        --ring: 0.556 0 0;
+        --chart-1: 0.488 0.243 264.376;
+        --chart-2: 0.696 0.17 162.48;
+        --chart-3: 0.769 0.188 70.08;
+        --chart-4: 0.627 0.265 303.9;
+        --chart-5: 0.645 0.246 16.439;
+        --sidebar: 0.205 0 0;
+        --sidebar-foreground: 0.985 0 0;
+        --sidebar-primary: 0.488 0.243 264.376;
+        --sidebar-primary-foreground: 0.985 0 0;
+        --sidebar-accent: 0.269 0 0;
+        --sidebar-accent-foreground: 0.985 0 0;
+        --sidebar-border: 1 0 0 / 10%;
+        --sidebar-ring: 0.439 0 0;
+        
+        /* Connect Four specific colors for dark mode - Enhanced */
+        --player1: 0.75 0.30 15;
+        --player1-dark: 0.65 0.30 15;
+        --player2: 0.80 0.25 65;
+        --player2-dark: 0.70 0.25 65;
+        --board-bg: 0.30 0.20 240;
+        --board-shadow: 0.15 0.15 240;
+        
+        /* Game specific gradients for dark mode */
+        --game-gradient-start: 0.20 0.05 260;
+        --game-gradient-end: 0.15 0.08 320;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer utilities {
+    /* Game-specific background */
+    .bg-game-gradient {
+        background: linear-gradient(135deg, 
+            oklch(var(--game-gradient-start)) 0%, 
+            oklch(var(--game-gradient-end)) 100%);
+    }
+
+    /* Game board styling - Perfect alignment system */
+    .game-board-container {
+        @apply relative;
+        filter: drop-shadow(0 10px 20px oklch(var(--board-shadow) / 0.2));
+        /* Ensure consistent rendering */
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+
+    @screen sm {
+        .game-board-container {
+            filter: drop-shadow(0 15px 30px oklch(var(--board-shadow) / 0.25));
+        }
+    }
+
+    @screen md {
+        .game-board-container {
+            filter: drop-shadow(0 20px 40px oklch(var(--board-shadow) / 0.3));
+        }
+    }
+
+    .game-board {
+        @apply relative rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl bg-board-bg;
+        border: 2px solid oklch(var(--board-bg));
+        padding: 0.75rem;
+        /* Ensure consistent rendering */
+        transform: translateZ(0);
+        will-change: transform;
+        background: linear-gradient(145deg, 
+            oklch(var(--board-bg)), 
+            oklch(var(--board-shadow)));
+    }
+
+    @screen sm {
+        .game-board {
+            border: 3px solid oklch(var(--board-bg));
+            padding: 1rem;
+        }
+    }
+
+    @screen md {
+        .game-board {
+            border: 4px solid oklch(var(--board-bg));
+            padding: 1.5rem;
+        }
+    }
+
+    /* Perfect grid alignment system */
+    .game-board-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.25rem;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    @screen sm {
+        .game-board-grid {
+            gap: 0.5rem;
+            max-width: 420px;
+        }
+    }
+
+    @screen md {
+        .game-board-grid {
+            gap: 0.75rem;
+            max-width: 588px;
+        }
+    }
+
+    .game-column {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 0.25rem;
+        align-items: center;
+    }
+
+    @screen sm {
+        .game-column {
+            gap: 0.5rem;
+        }
+    }
+
+    @screen md {
+        .game-column {
+            gap: 0.75rem;
+        }
+    }
+
+    /* Hover indicators - perfectly aligned */
+    .game-board-hover-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.25rem;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        padding: 0 0.75rem;
+    }
+
+    @screen sm {
+        .game-board-hover-grid {
+            gap: 0.5rem;
+            max-width: 420px;
+            padding: 0 1rem;
+        }
+    }
+
+    @screen md {
+        .game-board-hover-grid {
+            gap: 0.75rem;
+            max-width: 588px;
+            padding: 0 1.5rem;
+        }
+    }
+
+    .game-hover-indicator {
+        @apply w-8 h-6 sm:w-10 sm:h-7 md:w-14 md:h-8 rounded-lg flex items-center justify-center transition-all duration-200;
+        
+        &.active {
+            background-color: oklch(var(--primary) / 0.2);
+            
+            &:hover {
+                background-color: oklch(var(--primary) / 0.4);
+            }
+            
+            @apply cursor-pointer;
+        }
+        
+        &.inactive {
+            @apply opacity-0;
+        }
+    }
+
+    .game-hover-piece {
+        @apply w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full border-2;
+        
+        &.player1 {
+            background-color: oklch(var(--player1) / 0.5);
+            @apply border-player1;
+        }
+        
+        &.player2 {
+            background-color: oklch(var(--player2) / 0.5);
+            @apply border-player2;
+        }
+    }
+
+    /* Game piece styling - Perfect alignment */
+    .game-piece-slot {
+        @apply w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full border-2 transition-all duration-300 relative overflow-hidden;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 1px 4px rgba(0,0,0,0.1);
+        /* Ensure consistent rendering */
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        /* Perfect circle */
+        border-radius: 50%;
+        
+        &.empty {
+            background-color: rgba(255, 255, 255, 0.9);
+            @apply border-gray-300;
+            
+            &:hover {
+                border-color: oklch(var(--primary) / 0.5);
+                @apply shadow-md scale-105;
+            }
+        }
+        
+        &.player1 {
+            @apply bg-player1 border-player1-dark shadow-lg;
+            
+            &.winning {
+                animation: winning-piece 1s infinite;
+                @apply ring-2 sm:ring-4 ring-yellow-400;
+            }
+        }
+        
+        &.player2 {
+            @apply bg-player2 border-player2-dark shadow-lg;
+            
+            &.winning {
+                animation: winning-piece 1s infinite;
+                @apply ring-2 sm:ring-4 ring-yellow-400;
+            }
+        }
+        
+        &.clickable {
+            @apply cursor-pointer;
+            
+            &:hover {
+                @apply transform scale-105;
+            }
+        }
+        
+        &.disabled {
+            @apply cursor-not-allowed;
+        }
+    }
+
+    @screen sm {
+        .game-piece-slot {
+            @apply border-4;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 1px 6px rgba(0,0,0,0.12);
+        }
+    }
+
+    @screen md {
+        .game-piece-slot {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.15);
+        }
+    }
+
+    .piece-shine {
+        @apply absolute inset-0.5 sm:inset-1 rounded-full;
+        background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.3), transparent);
+    }
+
+    /* Card styling */
+    .game-card {
+        background-color: oklch(var(--card) / 0.95);
+        @apply backdrop-blur-sm border-2;
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+        backdrop-filter: blur(8px);
+    }
+
+    @screen sm {
+        .game-card {
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+        }
+    }
+
+    @screen md {
+        .game-card {
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+    }
+
+    .game-mode-card {
+        background-color: oklch(var(--card) / 0.95);
+        @apply backdrop-blur-sm;
+        box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+        backdrop-filter: blur(8px);
+    }
+
+    @screen sm {
+        .game-mode-card {
+            box-shadow: 0 15px 30px -8px rgba(0,0,0,0.12);
+        }
+    }
+
+    @screen md {
+        .game-mode-card {
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+        }
+    }
+
+    .game-result-card {
+        background-color: oklch(var(--card) / 0.95);
+        @apply backdrop-blur-sm border-2;
+        box-shadow: 0 15px 30px -8px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, 
+            oklch(var(--card)) 0%, 
+            oklch(var(--card) / 0.95) 100%);
+        backdrop-filter: blur(8px);
+    }
+
+    @screen sm {
+        .game-result-card {
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.22);
+        }
+    }
+
+    @screen md {
+        .game-result-card {
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+    }
+
+    /* Button styling */
+    .game-button {
+        @apply transition-all duration-300;
+        transform: translateZ(0);
+        
+        &:hover {
+            @apply scale-105 shadow-lg;
+        }
+    }
+
+    .game-button-primary {
+        background: linear-gradient(to right, oklch(var(--primary)), oklch(var(--primary) / 0.8));
+        @apply text-primary-foreground font-semibold transition-all duration-300;
+        transform: translateZ(0);
+        
+        &:hover {
+            background: linear-gradient(to right, oklch(var(--primary) / 0.9), oklch(var(--primary) / 0.7));
+            @apply scale-105 shadow-lg;
+        }
+    }
+
+    .game-button-secondary {
+        background: linear-gradient(to right, oklch(var(--secondary)), oklch(var(--secondary) / 0.8));
+        @apply text-secondary-foreground font-semibold transition-all duration-300;
+        transform: translateZ(0);
+        
+        &:hover {
+            background: linear-gradient(to right, oklch(var(--secondary) / 0.9), oklch(var(--secondary) / 0.7));
+            @apply scale-105 shadow-lg;
+        }
+    }
+
+    .game-button-accent {
+        background: linear-gradient(to right, oklch(var(--accent)), oklch(var(--accent) / 0.8));
+        @apply text-accent-foreground font-semibold transition-all duration-300;
+        transform: translateZ(0);
+        
+        &:hover {
+            background: linear-gradient(to right, oklch(var(--accent) / 0.9), oklch(var(--accent) / 0.7));
+            @apply scale-105 shadow-lg;
+        }
+    }
+
+    /* Badge styling */
+    .game-status-badge {
+        @apply font-semibold shadow-lg;
+    }
+
+    .game-mode-badge {
+        @apply font-medium;
+    }
+
+    /* Title styling */
+    .game-title {
+        background: linear-gradient(to right, oklch(var(--primary)), oklch(var(--secondary)), oklch(var(--accent)));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .game-result-title {
+        background: linear-gradient(to right, oklch(var(--primary)), oklch(var(--secondary)));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Highscore day grouping styles */
+    .day-group {
+        @apply relative;
+        
+        &:not(:last-child) {
+            @apply mb-6;
+        }
+    }
+
+    .day-entries {
+        @apply relative;
+        
+        &::before {
+            content: '';
+            @apply absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/40 via-primary/20 to-transparent;
+            border-radius: 2px;
+        }
+    }
+
+    @screen sm {
+        .day-entries::before {
+            @apply w-1;
+        }
+    }
+}
+
+@layer components {
+    /* Animations - Responsive */
+    @keyframes drop-piece {
+        0% {
+            transform: translateY(-200px) scale(0.8);
+            opacity: 0.7;
+        }
+        70% {
+            transform: translateY(5px) scale(1.1);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
+
+    @screen sm {
+        @keyframes drop-piece {
+            0% {
+                transform: translateY(-300px) scale(0.8);
+                opacity: 0.7;
+            }
+            70% {
+                transform: translateY(8px) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    }
+
+    @screen md {
+        @keyframes drop-piece {
+            0% {
+                transform: translateY(-400px) scale(0.8);
+                opacity: 0.7;
+            }
+            70% {
+                transform: translateY(10px) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+    }
+
+    @keyframes winning-piece {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 5px rgba(255, 215, 0, 0);
+        }
+    }
+
+    @screen sm {
+        @keyframes winning-piece {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 0 0 8px rgba(255, 215, 0, 0);
+            }
+        }
+    }
+
+    @screen md {
+        @keyframes winning-piece {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+            }
+        }
+    }
+
+    @keyframes pulse-gentle {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+    }
+
+    .animate-drop-piece {
+        animation: drop-piece 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .animate-winning-piece {
+        animation: winning-piece 1s infinite;
+    }
+
+    .animate-pulse-gentle {
+        animation: pulse-gentle 2s infinite;
+    }
+}
